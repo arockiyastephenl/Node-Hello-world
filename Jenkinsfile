@@ -1,15 +1,31 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:16' 
-            args '-p 3000:3000' 
-        }
+  agent { label 'linux' }
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '5'))
+  }
+  environment {
+    DOCKERHUB_CREDENTIALS = credentials('stephenz07')
+  }
+  stages {
+    stage('Build') {
+      steps {
+        sh 'docker build -t stephen/dp-alpine:latest .'
+      }
     }
-    stages {
-        stage('Build') { 
-            steps {
-                sh 'npm install' 
-            }
-        }
+    stage('Login') {
+      steps {
+        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+      }
     }
+    stage('Push') {
+      steps {
+        sh 'docker push stephen/dp-alpine:latest'
+      }
+    }
+  }
+  post {
+    always {
+      sh 'docker logout'
+    }
+  }
 }
