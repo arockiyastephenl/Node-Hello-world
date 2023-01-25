@@ -9,7 +9,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'docker build -t psvimal33329/node-app:latest .'
+        sh 'docker build -t psvimal33329/test:latest .'
       }
     }
     stage('Login') {
