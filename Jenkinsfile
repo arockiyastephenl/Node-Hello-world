@@ -4,12 +4,12 @@ pipeline {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
   environment {
-    DOCKERHUB_CREDENTIALS = credentials('stephenz07-dockerhub')
+    DOCKERHUB_CREDENTIALS = credentials('psvimal33329-dockerhub')
   }
   stages {
     stage('Build') {
       steps {
-        sh 'docker build -t stephenz07/node-app:latest .'
+        sh 'docker build -t psvimal33329/node-app:latest .'
       }
     }
     stage('Login') {
@@ -19,7 +19,7 @@ pipeline {
     }
     stage('Push') {
       steps {
-        sh 'docker push stephenz07/node-app:latest'
+        sh 'docker push psvimal33329/test:latest'
       }
     }
   }
